@@ -1,0 +1,61 @@
+链路追踪：
+1.添加依赖
+ <!--链路追踪-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+2.配置文件
+logging:
+  config: classpath:logback-spring.xml
+
+
+
+
+3.添加配置类
+在请求的时候生成traceId，并添加到header中
+请求结束后 MDC.remove(Constants.TRANCE_ID);
+@Configuration
+public class MyIntercepter implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String tid = request.getHeader(Constants.TRANCE_ID);
+        if (StringUtils.isEmpty(tid)) {
+            tid = TraceIdUtil.getTraceId();
+        }
+        MDC.put(Constants.TRANCE_ID, tid);
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        MDC.remove(Constants.TRANCE_ID);
+    }
+}
+
+
+
+
+
+4.添加日志配置文件
+ConsoleAppender:控制台打印日志；
+RollingFileAppender：用于将日志写入到由filename参数指定的文件中
+    TriggeringPolicy和RolloverPolicy来决定何时滚动 ：即当日志文件大小满足指定大小后，生成一个新的文件
+
+
+
+   <root level="debug">
+          <appender-ref ref="CONSOLE" />
+          <appender-ref ref="DEBUG_FILE" />
+          <appender-ref ref="INFO_FILE" />
+          <appender-ref ref="WARN_FILE" />
+          <appender-ref ref="ERROR_FILE" />
+   </root>
+   level：控制打印级别为debug
+   里面引用的是需要打印的日志。

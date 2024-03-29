@@ -1,0 +1,9 @@
+指定数据脱敏：
+1.第一引入依赖：
+      <!--工具依赖-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.16</version>
+        </dependency>
+

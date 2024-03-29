@@ -1,0 +1,54 @@
+思路：通过注解的方式，对指定的字段进行加密，可以在指定的字符窜开始位置和结束位置进行加密操作。
+
+### 1.依赖：
+ <!--工具依赖-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.16</version>
+        </dependency>
+
+
+
+
+
+2.创建注解类：
+第一个属性，指定字段的类型；是手机号、邮箱还是其他类型；
+第二个属性，指定开始脱敏的位置；
+第三个属性，指定结束脱敏的位置；
+
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@JacksonAnnotationsInside
+@JsonSerialize(using = DesensitizationSerialize.class)
+public @interface Desensitization {
+    //脱敏数据类型，在MY_RULE的时候，startInclude和endExclude生效
+    DesensitizationTypeEnum type() default DesensitizationTypeEnum.MY_RULE; //脱敏类型
+
+    /**
+     * 脱敏开始位置（包含）
+     */
+    int startInclude() default 0;
+
+    /**
+     * 脱敏结束位置（不包含）
+     */
+    int endExclude() default 0;
+
+}
+
+
+
+
+3.创建脱敏规则类：
+DesensitizationSerialize
+针对各种类型的数据进行加密。
+
+
+4.对返回类上进行应用：TestPojo
+
+
+
+
+

@@ -1,0 +1,58 @@
+
+Future是为了配合Callable/Runnable而产生的。简单来讲，我们可以通过future来对任务查询、取消、执行结果的获取，是调用方与异步执行方之间沟通的桥梁。
+
+FutureTask实现了RunnableFuture接口，同时具有Runnable、Future的能力，即既可以作为Future得到Callable的返回值，
+又可以作为一个Runnable。
+
+CompletableFuture实现了Futrue接口。
+
+Future是Java5新加的一个接口，它提供了一种异步并行计算的功能。如果主线程需要执行一个很耗时的计算任务，
+我们可以将这个任务通过Future放到异步线程中去执行。主线程继续处理其他任务，处理完成后，再通过Future获取计算结果。
+
+Future可以在连续流程中满足数据驱动的并发需求，既获得了并发执行的性能提升，又不失连续流程的简洁优雅。
+
+
+
+1.completableFuture使用场景
+   创建异步任务
+   supplyAsync 支持有返回值
+   runAsync 不支持有返回值
+   简单任务异步回调
+   多个任务组合处理
+
+2.异步调用
+ 不关心上个任务返回结果，无传参，无返回值
+    thenRun
+    thenRunAsync
+ 依赖上个任务返回结果，有传参，无返回值
+    thenAccept
+    thenAcceptAsync
+ 依赖上个任务返回结果，有传参，有返回值
+    thenApply
+    thenApplyAsync
+ 依赖上个任务返回结果，无传参，有返回值
+    thenCompose
+    thenComposeAsync
+ 某个任务执行异常时,执行回调函数
+   exceptionally
+ 某个任务执行完成时,执行回调函数,无返回值
+   whenComplete
+ 某个任务执行完成时,执行回调函数,有返回值
+   handle
+
+ 3.AND组合关系
+   thenCombine：会将两个任务的执行结果作为方法入参，传递到指定方法中，且有返回值。
+   thenAcceptBoth: 会将两个任务的执行结果作为方法入参，传递到指定方法中，且无返回值。
+   runAfterBoth 不会把执行结果当做方法入参，且没有返回值。
+ 4.OR组合关系
+     applyToEither：会将已经执行完成的任务，作为方法入参，传递到指定方法中，且有返回值。
+     acceptEither: 会将已经执行完成的任务，作为方法入参，传递到指定方法中，且无返回值。
+     runAfterEither：不会把执行结果当做方法入参，且没有返回值。
+
+ 5.AllOf
+     所有任务都执行完成后，才执行 allOf返回的CompletableFuture。
+     如果任意一个任务异常，allOf的CompletableFuture，执行get方法，会抛出异常。
+
+ 6.AnyOf
+     任意一个任务执行完，就执行anyOf返回的CompletableFuture。
+     如果执行的任务异常，anyOf的CompletableFuture，执行get方法，会抛出异常。

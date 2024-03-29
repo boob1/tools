@@ -1,0 +1,17 @@
+server:
+  port: 8082
+logging:
+  config: classpath:spring-logback.xml
+spring:
+  application:
+    name: hongda-server
+justauth:
+  enabled: true
+  type:
+    GITEE:
+      client-id: 61977df44510af284a0af469e00bb7d04e71bca90071498e3a950afa9b7cfc66
+      client-secret: 629a042c918264063890e7f184851b964d60c6bfb043bef1b67b129be961c8b0
+      redirect-uri: http://127.0.0.1:8082/oauth/gitee/callback
+  cache:
+    type: default
+
