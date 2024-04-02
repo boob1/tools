@@ -1,0 +1,7 @@
+数据整理树状结构；
+1.查询所有数据;
+
+2.数据整理:getLongTeeNode
+
+3.数据封装：
+ TreeUtil.build(nodeList, 0L);

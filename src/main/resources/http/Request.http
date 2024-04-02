@@ -1,0 +1,8 @@
+### 访问
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json; charset=utf-8
+
+{
+  "username": "john",
+  "password": "password"
+}

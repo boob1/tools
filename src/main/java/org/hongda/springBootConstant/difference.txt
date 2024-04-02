@@ -1,0 +1,20 @@
+@PropertySources与@ConfigurationProperties的区别
+
+@PropertySources 注解的作用：
+指定多个属性源： @PropertySources 允许您在一个配置类中指定多个属性源，每个属性源对应一个属性文件。这些属性源可以包含应用程序的配置信息，如数据库连接参数、日志级别、服务端口等。
+
+模块化配置： 通过将配置信息分散在多个属性文件中，您可以将应用程序的配置模块化，使每个模块负责自己的配置。这使得代码更易于维护和理解，特别是在大型应用程序中。
+
+环境适应性： 您可以为不同的环境（如开发、测试、生产）或不同的配置需求定义不同的属性源。这使得应用程序能够在不同环境中使用不同的配置，而不必修改代码。
+
+属性源优先级： 如果存在多个属性源，Spring 将按照它们在 @PropertySources 注解中的顺序来解析属性。这意味着后面的属性源可以覆盖前面的属性源中的属性值。
+
+
+@ConfigurationProperties 的关系：
+@PropertySources 和 @ConfigurationProperties 都用于处理配置属性，但它们的关注点和使用方式不同。
+
+@PropertySources 主要用于定义属性源，将配置信息存储在不同的属性文件中，并在不同环境或模块之间共享配置。它不直接与 Java Bean 绑定。
+
+@ConfigurationProperties 主要用于将配置属性绑定到 Java Bean 上。它通常与 @Configuration 或 @Component 注解一起使用，以将外部属性文件中的属性值映射到一个特定的 Java Bean。
+
+通常情况下，您会使用 @PropertySources 来定义属性源，然后使用 @ConfigurationProperties 来将属性源中的属性值绑定到 Java Bean，以便在整个应用程序中使用这些属性。这两个注解可以协同工作，但它们的功能不同，各自有其用途。

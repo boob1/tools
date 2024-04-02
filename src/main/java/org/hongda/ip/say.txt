@@ -1,4 +1,4 @@
-离线查询Ip的维度：
+离线查询Ip的位置：
 1.在gitee下载一个ip2region的离线库，这个库是一个ip到地区的映射库，里面包含了ip到地区的映射关系，
 可以通过ip查询到该ip所属的地理位置信息。
 下载地址:https://gitee.com/lionsoul/ip2region/tree/master/data

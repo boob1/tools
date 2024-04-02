@@ -1,0 +1,27 @@
+应用：
+第一步：yml添加常量配置：
+# 常量
+myapp:
+  name: first-project
+  version: 1.0.0
+
+第二步：通过前缀获取常量
+@Data
+@ConfigurationProperties(prefix =  "myapp")
+public class MyAppProperties {
+    private String name;
+    private String version;
+
+}
+
+第三步创建普通类：@EnableConfigurationProperties 注解用于启用对 MyAppProperties 类的配置属性绑定
+
+@Configuration
+@EnableConfigurationProperties(MyAppProperties.class)
+public class AppConfig {
+}
+
+第四步：注入常量类进行引用：
+@Autowired
+   private MyService myService;
+

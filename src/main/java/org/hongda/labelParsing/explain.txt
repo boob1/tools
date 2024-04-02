@@ -1,0 +1,27 @@
+中心：解析标签的内容进行修改
+
+第一：添加依赖：
+   <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.14.3</version>
+    </dependency>
+
+第二步：解析内容：
+
+
+       // 转换成一个可操作的文档对象
+        Document doc = Jsoup.parse(wordText);
+        // 获取所有的段落
+        Elements paragraphs = doc.select("p > img");
+        // 遍历所有的段落
+        if (!paragraphs.isEmpty()) {
+            for (Element paragraph : paragraphs) {
+                // 获取图片的路径
+                String imagePath = paragraph.attr("src");
+                String nasPath = "/mms/2024-03-12/7.jpg";
+                paragraph.attr("src", nasPath);
+            }
+        }
+        // 输出修改后的内容
+        System.out.println(doc.select("p").toString()); ;

@@ -1,0 +1,18 @@
+第一步：在resource下创建两个文件：
+default.properties
+custom.properties
+
+第二步：引入常量源文件：@PropertySources
+@Configuration
+@PropertySources({
+        @PropertySource("classpath:default.properties"),
+        @PropertySource("classpath:custom.properties")})
+public class MyAppConfig {
+}
+
+第三步：通过名称注入常量
+    @Value("${app.name}")
+    private String appName;
+
+    @Value("${app.version}")
+    private String appVersion;
