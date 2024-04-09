@@ -97,10 +97,16 @@
             <version>8.0.23</version> <!-- 替换为正确的版本号 -->
         </dependency>
         <!--mybatis-plus启动器-->
-        <dependency>
+      <!--  <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.1</version>
+        </dependency>-->
+        <!--引入mybatisplus依赖-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.1</version>
         </dependency>
     </dependencies>
 

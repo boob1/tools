@@ -1,0 +1,114 @@
+1.引入依賴：
+ <!-- MySQL的连接依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- MySQL的连接依赖-->
+        <!--引入mybatisplus依赖-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
+2.yml配置：
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/数据名称?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    username: 自己数据库用户名
+    password: 自己数据库密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+
+
+
+
+3.mybatis-plus截器添加了分页插件（PaginationInnerInterceptor）到该代理对象中
+@Configuration
+public class MybatisPlusConfig {
+
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor(){
+        // MybatisPlusInterceptor是MyBatis-Plus中用于配置拦截器的类
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // PaginationInnerInterceptor是MyBatis-Plus的分页插件，它可以帮助你轻松地实现分页查询功能
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+        return interceptor;
+    }
+
+
+4.启动类中扫描XXmapper.java文件
+@MapperScan("org.hongda.tree.mapper,org.hongda.page.mapper")
+
+
+5.创建mapper.java文件
+@Mapper
+public interface UserDataMapper extends BaseMapper<User> {
+    /**
+     * 查询全部用户信息
+     * @return
+     */
+    IPage<User> findAll(Page<PagePara> page, @Param("par")PagePara pagePara);
+}
+
+6.采用分页查询，
+
+ @Override
+    public PageResultS<User> findAll(PagePara pagePara) {
+        //  当前页
+        Long nowPage = pagePara.getNowPage() == null ? 1 : pagePara.getNowPage();
+        Long pageCount = pagePara.getPageCount() == null ? 10 : pagePara.getPageCount();
+        //  放入分页属性
+
+        Page<PagePara> page = new Page<>(nowPage, pageCount);
+        //  执行查询
+        IPage<User> queryResult = userMapper.findAll(page, pagePara);
+
+        // 返回结果封装分页信息
+        PagePara pageParaData = new PagePara(queryResult.getCurrent(), queryResult.getSize(), queryResult.getTotal(), queryResult.getPages());
+        PageResultS<User> resultS = new PageResultS<>();
+        resultS.setPagePara(pageParaData);
+        resultS.setList(queryResult.getRecords());
+        return resultS;
+    }
+
+
+7.其他类
+7.1分页属性
+@Data
+@NoArgsConstructor
+public class PagePara {
+    @JsonProperty("nowPage")
+    private Long nowPage;
+
+    @JsonProperty("onePageCount")
+    private Long onePageCount;
+
+    @JsonProperty("dataCount")
+    private Long dataCount;
+
+    @JsonProperty("pageCount")
+    private Long pageCount;
+
+    @JsonProperty("startIndex")
+    private Long startIndex;
+
+    @JsonProperty("orderKey")
+    private String orderKey;
+
+    public PagePara(Long nowPage, Long onePageCount, Long dataCount, Long pageCount) {
+        this.nowPage = nowPage;
+        this.onePageCount = onePageCount;
+        this.dataCount = dataCount;
+        this.pageCount = pageCount;
+    }
+}
+
+

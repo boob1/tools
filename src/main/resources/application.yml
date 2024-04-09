@@ -11,13 +11,10 @@ spring:
     # 配置数据类型
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://47.96.234.82:3306/mybatis_plus?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://47.96.234.82:3306/practice_study?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
     username: root
     password: 123456
   # 打印mybatis的sql日志
-  mybatis-plus:
-    configuration:
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 # 配置justauth 第三方登录
@@ -31,6 +28,10 @@ justauth:
   cache:
     type: default
 
+# 配置mybatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+
 
 
 
@@ -41,7 +42,6 @@ justauth:
 myapp:
   name: first-project
   version: 1.0.0
-
 
 
 

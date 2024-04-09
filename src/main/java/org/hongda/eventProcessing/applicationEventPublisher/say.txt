@@ -1,0 +1,38 @@
+1.自定义事件，继承extends ApplicationEvent
+public class MyCustomEvent extends ApplicationEvent {
+    private final String eventData;
+
+    public MyCustomEvent(Object source, String eventData) {
+        super(source);
+        this.eventData = eventData;
+    }
+
+    public String getEventData() {
+      return eventData;
+    }
+}
+
+2.定义事件监听器，实现ApplicationListener接口
+@Component
+public class MyEventListener implements ApplicationListener<MyCustomEvent> {
+    @Override
+    public void onApplicationEvent(MyCustomEvent event) {
+        // 处理自定义事件
+        String eventData = event.getEventData();
+        System.out.println("Received event with data: " + eventData);
+    }
+}
+
+3.执行发布事件
+通过ApplicationContext或ApplicationEventPublisher发布事件
+@Service
+public class MyService2 {
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    public void performSomeAction() {
+        // 创建并发布自定义事件
+        MyCustomEvent event = new MyCustomEvent(this, "发布广播消息！");
+        applicationEventPublisher.publishEvent(event);
+    }
+}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.hongda.tree.mapper.CatMapper">
-    <select id="selectById1" resultType="org.hongda.tree.pojo.Cat">
-        select * from cat
+<mapper namespace="org.hongda.page.page1.mapper.UserDataMapper">
+    <select id="findAll" resultType="org.hongda.page.page1.User">
+        select * from user
     </select>
 </mapper>
