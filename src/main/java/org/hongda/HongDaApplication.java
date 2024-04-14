@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("org.hongda.tree.mapper,org.hongda.page.mapper")
+@MapperScan("org.hongda.tree.mapper,org.hongda.page.page1.mapper")
 public class HongDaApplication {
     public static void main(String[] args) {
         SpringApplication.run(HongDaApplication.class, args);
