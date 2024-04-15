@@ -87,4 +87,4 @@
 
 
   4.创建redis添加数据的工具；
-  org.hongda.redis.RedisUtil
+  org.hongda.redis.redisTool.RedisUtil
