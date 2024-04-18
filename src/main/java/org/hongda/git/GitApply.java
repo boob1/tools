@@ -22,4 +22,9 @@ public class GitApply {
     public  void test4abc() {
         System.out.println("git第3次提交");
     }
+
+    public  void test5abc() {
+        System.out.println("git第3次提交");
+    }
+}
 }
