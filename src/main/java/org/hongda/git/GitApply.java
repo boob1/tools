@@ -15,7 +15,7 @@ public class GitApply {
         System.out.println("git第2次提交");
     }
 
-    public  void test3() {
+    public  void test3abc() {
         System.out.println("git第3次提交");
     }
 }
