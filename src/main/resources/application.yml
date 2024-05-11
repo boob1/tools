@@ -26,6 +26,14 @@ spring:
         max-active: 32
 
 
+# 配置文件上传
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+
+
 
 # 配置mybatis配置
 mybatis:
@@ -46,8 +54,10 @@ justauth:
 
 
 
-
-
+# 设置上传路径
+upload:
+  folder: D:/file/
+  download: /download?fileName=
 
 
 # 常量

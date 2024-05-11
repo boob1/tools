@@ -23,5 +23,4 @@ public class AppConfig {
 
 第四步：注入常量类进行引用：
 @Autowired
-   private MyService myService;
-
+    private MyAppProperties myAppProperties;

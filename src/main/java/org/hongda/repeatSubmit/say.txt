@@ -1,0 +1,182 @@
+1.添加maven依赖：
+  <!--AOP的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+
+
+RedissonClient配置：
+
+@Configuration
+public class RedissonConfig {
+    @Bean
+    public RedissonClient redissonClient() {
+        Config config = new Config();
+        // 设置你的Redis连接配置...
+        config.useSingleServer()
+                .setAddress("redis://47.96.234.82:6379").setPassword("123456");
+
+        return Redisson.create(config);
+    }
+}
+
+
+
+
+
+2.配置方法注解：
+@Target(ElementType.METHOD)
+@Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+public @interface RequestDebounceLock {
+    /**
+     * redis锁前缀（接口方法名）
+     */
+    String prefix() default "";
+
+    /**
+     * redis过期时间 默认2秒
+     */
+    int expire() default 2;
+
+    /**
+     * redis过期时间单位，默认单位秒
+     */
+    TimeUnit timeUnit() default TimeUnit.SECONDS;
+
+    /**
+     * redis  key分隔符
+     * 默认@
+     */
+    String delimiter() default "@";
+
+
+}
+ 实现方法注解:
+ @Aspect
+ @Configuration
+ @Order(2)
+ public class RequestDebounceLockAspect {
+     private RedissonClient redissonClient;
+
+     @Autowired
+     public RequestDebounceLockAspect(RedissonClient redissonClient) {
+         this.redissonClient = redissonClient;
+     }
+
+     @Around("execution(public * *(..)) && @annotation(org.hongda.repeatSubmit.RequestDebounceLock)")
+     public Object interceptor(ProceedingJoinPoint joinPoint) {
+         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+         Method method = signature.getMethod();
+
+         RequestDebounceLock requestLock = method.getAnnotation(RequestDebounceLock.class);
+         if (StrUtil.isBlank(requestLock.prefix())) {
+             throw new RuntimeException("RequestDebounceLock注解的prefix不能为空");
+         }
+
+         // 获取自定义的key
+         final String lockKey = RequestKeyGenerator.getLockKey(joinPoint);
+         // 使用redisson实现分布式锁的方式判断是否重复提交；
+         RLock lock = redissonClient.getLock(lockKey);
+         boolean isLock = false;
+
+         try {
+             // 获取锁
+             isLock = lock.tryLock();
+             // 没有拿到锁说明有请求在执行
+             if (!isLock) {
+                 throw new RuntimeException("请求重复提交,请稍后再试");
+             }
+             // 拿到锁后设置过期时间
+             lock.lock(requestLock.expire(), requestLock.timeUnit());
+
+             try {
+                 return joinPoint.proceed();
+             } catch (Throwable e) {
+                 throw new RuntimeException(e);
+             }
+
+         } catch (RuntimeException e) {
+             throw new RuntimeException(e);
+         } finally {
+             // 释放锁
+             if (isLock && lock.isHeldByCurrentThread()) {
+                 lock.unlock();
+             }
+         }
+
+
+     }
+
+ }
+
+
+
+ 3.属性的注解：
+ @Target({java.lang.annotation.ElementType.PARAMETER, java.lang.annotation.ElementType.FIELD, java.lang.annotation.ElementType.METHOD})
+ @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+ @Documented
+ @Inherited
+ public @interface RequestRedisKeyParam {
+
+ }
+
+
+
+属性注解的key获取
+public class RequestKeyGenerator {
+
+    /**
+     * 生成锁的键名。
+     * 根据方法参数或对象字段的注解 RequestRedisKeyParam 来构建锁的键名。
+     * 键名格式为: 前缀 + 分隔符 + 参数值(或字段值)。
+     * 如果方法参数或对象字段没有注解 RequestRedisKeyParam，则忽略该参数或字段。
+     *
+     * @param joinPoint AOP的连接点，代表被拦截的方法。
+     * @return 构建好的锁键名字符串。
+     */
+    public static String getLockKey(ProceedingJoinPoint joinPoint) {
+        // 获取方法签名和Method对象
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Method method = methodSignature.getMethod();
+
+        RequestDebounceLock requestLock = method.getAnnotation(RequestDebounceLock.class);
+        // 获取方法参数
+        Object[] args = joinPoint.getArgs();
+        // 获取Method对象上所有的参数注解
+        final Parameter[] parameters = method.getParameters();
+        StringBuilder sb = new StringBuilder();
+        // 遍历参数，寻找注解RequestRedisKeyParam，并拼接键名
+        for (int i = 0; i < parameters.length; i++) {
+            final RequestRedisKeyParam keyParam = parameters[i].getAnnotation(RequestRedisKeyParam.class);
+            if (keyParam == null) {
+                continue;
+            }
+            sb.append(requestLock.delimiter()).append(args[i]);
+        }
+
+        // 如果上述拼接为空，则尝试根据参数对象的字段注解拼接键名
+        if (StrUtil.isEmpty(sb.toString())) {
+            final Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+            for (int i = 0; i < parameterAnnotations.length; i++) {
+                final Object arg = args[i];
+                // 遍历参数对象的字段，寻找注解RequestRedisKeyParam，并拼接键名
+                final Field[] fields = arg.getClass().getDeclaredFields();
+                for (Field field : fields) {
+                    final RequestRedisKeyParam annotation = field.getAnnotation(RequestRedisKeyParam.class);
+                    if (annotation == null) {
+                        continue;
+                    }
+                    field.setAccessible(true);
+                    sb.append(requestLock.delimiter()).append(ReflectionUtils.getField(field, arg));
+                }
+            }
+        }
+        // 返回最终构建的锁键名
+        return StrUtil.format("{}{}", requestLock.prefix(), sb);
+    }
+
+}

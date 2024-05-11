@@ -13,6 +13,9 @@ import java.util.Date;
  * @Date 2024/3/11 19:28
  **/
 public class DateUtil {
+    public static void main(String[] args) {
+        testNewDate();
+    }
 
 
     // 1.旧的获取new Date();Calendar.getInstance().getTime()
