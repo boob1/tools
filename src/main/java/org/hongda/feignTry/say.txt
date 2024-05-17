@@ -1,0 +1,25 @@
+1.依赖：
+  <!-- Spring Retry -->
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+            <version>1.2.5.RELEASE</version>
+        </dependency>
+
+        <!-- Feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.1.3.RELEASE</version>
+        </dependency>
+
+2.启动类上添加：
+  @EnableRetry
+  @EnableFeignClients
+
+
+3.调用接口上添加：
+@FeignRetry(maxAttempt = 6, backoff = @Backoff(delay = 500L, maxDelay = 20000L, multiplier = 4))
+最多调用6次，每次间隔500毫秒，最大间隔20秒，间隔时间倍增
+
+@FeignClient(name = "${ service.expert.name }", contextId = "BusinessSupportClient", path = "${service.expert.path}", url = " http://10.4.174.151:9000 ", fallback = BusinessSupportClientFallback.class)

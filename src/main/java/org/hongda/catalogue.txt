@@ -10,3 +10,4 @@
 9.org.hongda.page.page1...........................分页插件
 10.org.hongda.eventProcessing.....................事件处理
 11.org.hongda.redis................................redis缓存
+12.org.hongda.repeatSubmit.........................防抖防重复提交

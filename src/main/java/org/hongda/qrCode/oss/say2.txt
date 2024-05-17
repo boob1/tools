@@ -1,0 +1,55 @@
+1.添加依赖
+  <!-- 二维码依赖 -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.1.6.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+      <!--oss-->
+        <dependency>
+            <groupId>com.yuancore</groupId>
+            <artifactId>yc-obs-sdk</artifactId>
+            <version>5.7.2</version>
+        </dependency>
+
+
+2.通过createImage（）方法生成二维码再转化字节流转化转化 MultipartFile进行上传欧oss
+
+
+
+3.配置：
+# OSS配置
+oss:
+  endPoint: http://10.4.33.170:8088
+  backEndPoint: http://10.4.33.170:8088
+  userAccessKey: 7MWB4DMYRFV0EZCB0G8W
+  userScretKey: NlTUrRVOgCQJfSweP0Y99qvw45gkIXwz9KeHWd0P
+  bucketName: yxglpt-bucket
+  imgPath: expert/image/
+  videoPath: expert/video/
+  pdfPath: expert/pdf/
+  iconPath: expert/icon/
+  expireTime: 93600
+  joinEndPoint: 0
+  ffmpegDir: /app/app/ffmpeg
+  innerDomain: http://kfobjstor.tlb.com:8088
+  outerDomain: https://tlmecodev.zjtlcb.com:8102
+  h5Url: https://tlmecodev.zjtlcb.com:8102/
+
