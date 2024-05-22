@@ -1,0 +1,113 @@
+1.针对springboot和Springcloud的版本下载自己的nacos的版本
+ 版本对照地址：
+ https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E
+
+2.下载nacos的版本
+ 下载地址：https://github.com/alibaba/nacos/releases
+
+3.配置单机版的nacos：这个是nacos需要的表在下面配置的数据库中执行：nacos-mysql.sql
+
+在nacos下载好后在conf/application.properties中配置
+spring.datasource.platform=mysql
+db.num=1
+db.url.0=jdbc:mysql://127.0.0.1:3306/nacos
+db.user=nacos
+db.password=nacos
+server.port=8848
+
+
+
+
+4.启动nacos
+在nacos的bin目录下执行命令：startup.cmd -m standalone
+
+5.idea中配置maven
+ <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.12.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+     <properties>
+            <maven.compiler.source>8</maven.compiler.source>
+            <maven.compiler.target>8</maven.compiler.target>
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+            <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+            <spring-cloud-alibaba.version>2.2.8.RELEASE</spring-cloud-alibaba.version>
+        </properties>
+
+
+ <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- SpringBoot Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+          <!-- nacos的配置-->
+            <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                </dependency>
+
+
+                <dependency>
+                    <groupId>com.alibaba.nacos</groupId>
+                    <artifactId>nacos-common</artifactId>
+                    <version>2.1.0</version>
+                </dependency>
+
+                 </dependencies>
+
+                    <dependencyManagement>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.springframework.cloud</groupId>
+                                <artifactId>spring-cloud-dependencies</artifactId>
+                                <version>${spring-cloud.version}</version>
+                                <type>pom</type>
+                                <scope>import</scope>
+                            </dependency>
+                            <dependency>
+                                <groupId>com.alibaba.cloud</groupId>
+                                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                                <version>${spring-cloud-alibaba.version}</version>
+                                <type>pom</type>
+                                <scope>import</scope>
+                            </dependency>
+                        </dependencies>
+                    </dependencyManagement>
+
+
+6.yml的配置：
+spring:
+  profiles:
+    active: dev
+  application:
+    name: productA
+
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.10.1:8848
+        file-extension: yml
+        namespace: ${spring.profiles.active}
+      discovery:
+        server-addr: 192.168.10.1:8848
+        namespace: ${spring.profiles.active}

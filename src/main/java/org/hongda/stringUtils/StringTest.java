@@ -1,4 +1,4 @@
-package stringTools;
+package org.hongda.stringUtils;
 
 /**
  * @ClassName StringTest

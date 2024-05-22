@@ -1,4 +1,4 @@
-package stringTools;
+package org.hongda.stringUtils;
 
 import cn.hutool.core.util.StrUtil;
 

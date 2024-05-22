@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName RepeatClickCount
- * @Description TODO
+ * @Description 点一次计算一次的点击量
  * @Author liuyibo
  * @Date 2024/5/17 11:22
  **/
@@ -32,8 +32,10 @@ public class RepeatClickCount {
             if (!isLock) {
                 return Result.success("点击太频繁稍后重试！");
             }
-            RAtomicLong clickCounter = redissonClient.getAtomicLong(lockKey);
+            String lockKey1 = StrUtil.format("{}{}", SMALL_STORE_CLICK+"1", id);
+            RAtomicLong clickCounter = redissonClient.getAtomicLong(lockKey1);
             clickCounter.incrementAndGet();
+            // 获取当前点击量
             currentClicks = clickCounter.get();
 
             // smallStoresStoriesReadModelRepository.updateReadingVolumeById(id, currentClicks);

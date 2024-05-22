@@ -1,0 +1,58 @@
+#spring:
+#  profiles:
+#    active: local
+#  application:
+#    name: ttms-expert
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.cloud.sleuth.instrument.redis.TraceRedisAutoConfiguration
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: 'info,health,prometheus,metrics,service-registry'
+#server:
+#  port: 9000
+#  tomcat:
+#    basedir: ./temp
+#  servlet:
+#    context-path: /ttms-expert
+#mybatis-plus:
+#  mapper-locations: classpath*:/mybatis/mapper/*.xml
+#
+#
+## 开放环境nacos
+#---
+#spring:
+#  profiles: local,dev,sit,uat
+#  cloud:
+#    nacos:
+#      config:
+#        server-addr: 10.4.20.18:8848
+#        file-extension: yml
+#        namespace: ${spring.profiles.active}
+#      discovery:
+#        server-addr: 10.4.20.18:8848
+#        namespace: ${spring.profiles.active}
+## 生产环境Nacos
+#---
+#spring:
+#  profiles: prod
+#  cloud:
+#    nacos:
+#      config:
+#        server-addr: 20.3.200.52:8848
+#        file-extension: yml
+#        namespace: ${spring.profiles.active}
+#      discovery:
+#        server-addr: 20.3.200.52:8848
+#        namespace: ${spring.profiles.active}
+#
+#
+#
+#
+#
+#
+#swagger:
+#  base:
+#    enable: true

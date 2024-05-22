@@ -9,7 +9,7 @@ import java.util.UUID;
 
 /**
  * @ClassName ViewServiceImpl
- * @Description TODO
+ * @Description 一个客户只计算一次的点击量
  * @Author liuyibo
  * @Date 2024/5/11 15:15
  **/
@@ -19,7 +19,6 @@ public class ViewServiceImpl implements ViewService{
     private RedisTemplate redisTemplate;
     @Override
     public int getClicksCount() {
-       /* redisTemplate.hincry("clicksCount", "count", 1);*/
 
         redisTemplate.opsForHyperLogLog().add("clicksCount", Arrays.asList(UUID.randomUUID()));
 

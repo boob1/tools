@@ -1,0 +1,21 @@
+第一：配置注意：
+jar的启动脚本：
+1.要和打包的jar的文件夹名字一致
+projectName="ttms-expert"
+
+2.端口的设置
+port="8204"
+
+3.文件存放位置
+/app/app/ttms-expert/
+里面放XXX.jar文件
+
+4.如果启动不起来：./start.sh
+java -jar ttms-expert.jar --spring.profiles.active=dev --server.port=8204 > /dev/null 2>&1 &
+
+
+
+
+第二拷贝文件注意：
+只需要把starts.sh
+和ttms-expert.jar拷贝到/app/app/ttms-expert/目录下即可

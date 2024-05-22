@@ -11,3 +11,10 @@
 10.org.hongda.eventProcessing.....................事件处理
 11.org.hongda.redis................................redis缓存
 12.org.hongda.repeatSubmit.........................防抖防重复提交
+13.org.hongda.feignTry...........................feign重试机制
+14.org.hongda.qrCode.oss...........................生成二维码
+15.org.hongda.upload................................文件上传
+16.org.hongda.redis.redissonLock.....................redisson分布式锁
+17.org.hongda.countingClicks.........................统计点击量
+18.org.hongda.hutool..................................hutool工具类
+19.org.hongda.nacos..................................nacos配置中心

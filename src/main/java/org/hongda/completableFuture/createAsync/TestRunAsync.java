@@ -1,6 +1,5 @@
 package org.hongda.completableFuture.createAsync;
 
-import com.sun.xml.internal.ws.util.CompletedFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;
 
