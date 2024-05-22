@@ -111,3 +111,7 @@ spring:
       discovery:
         server-addr: 192.168.10.1:8848
         namespace: ${spring.profiles.active}
+
+
+7.启动类上添加开启nacos的注解：
+@EnableDiscoveryClient
