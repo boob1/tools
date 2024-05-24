@@ -1,0 +1,101 @@
+A服务调用B服务;
+
+A服务：
+
+1.配置maven的依賴：nacos和feignClient
+ <!-- 阿里巴巴 nacos 配置中心 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <!-- 阿里巴巴 nacos 注册发现 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <!-- 服务调用 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+
+2.在application.yml中配置nacos的配置中心和注册中心地址
+#nacos配置中心地址
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.2.245:8848
+        file-extension: yml
+        namespace: ${spring.profiles.active}
+      discovery:
+        server-addr: 192.168.2.245:8848
+        namespace: ${spring.profiles.active}
+
+
+#feign超時配置時間
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+
+
+3.在启动类上添加@EnableFeignClients注解开启Feign的功能
+@SpringBootApplication
+@EnableFeignClients
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+
+
+
+4.创建一个接口，并使用@FeignClient注解来指定要调用的微服务的名称
+@Component
+@FeignClient(name = "productA",path = "/productA",contextId = "userFeignService", fallback = UserFeignServiceFallback.class)
+public interface UserFeignService {
+    @RequestMapping(value = "/user/findListByName/{name}", method = RequestMethod.GET)
+    Result findByName(@PathVariable("name") String name);
+}
+
+name：表示调用服务的名字；
+path：表示调用服务的路径；举例yml配置servlet. context-path: /productA
+contextId:唯一标识，方便区分不同的FeignClient；
+fallback：表示当调用服务失败时，会使用该类来处理异常情况。
+
+注意：必须要有path：或者不能动态的通过nacos的调用；只能通过url指定了。
+
+
+5.创建一个实现类，实现FeignClient接口，并实现其中的方法，用于处理调用服务失败的情况
+@Slf4j
+public class UserFeignServiceFallback implements UserFeignService {
+    @Override
+    public Result findByName(String name) {
+        return null;
+    }
+}
+
+
+
+B服务：
+@RestController
+public class UserController {
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/user/findListByName/{name}")
+    public Result findByName(@PathVariable("name") String name) {
+       List<UserVO> list = userService.findByName(name);
+        return Result.success(list);
+    }
+}

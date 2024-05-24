@@ -65,14 +65,6 @@ server.port=8848
                     <groupId>com.alibaba.cloud</groupId>
                     <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
                 </dependency>
-
-
-                <dependency>
-                    <groupId>com.alibaba.nacos</groupId>
-                    <artifactId>nacos-common</artifactId>
-                    <version>2.1.0</version>
-                </dependency>
-
                  </dependencies>
 
                     <dependencyManagement>
