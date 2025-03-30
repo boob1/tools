@@ -39,7 +39,7 @@ public class TestJsoup {
             for (Element paragraph : paragraphs) {
                 // 获取图片的路径
                 String imagePath = paragraph.attr("src");
-                String nasPath = "/mms/2024-03-12/7.jpg";
+                String nasPath = "/2024-03-12/7.jpg";
                 // 修改图片的路径
                 paragraph.attr("src", nasPath);
             }
