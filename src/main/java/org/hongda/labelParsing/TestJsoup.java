@@ -17,7 +17,7 @@ import java.io.IOException;
 public class TestJsoup {
     public static void main(String[] args) throws IOException {
 
-        String html1 = "<p><strong>来来来我是加粗的字体</strong></p><p><em>斜体哈哈哈哈哈哈</em></p><p><u>下横线的字体哈哈哈</u></p><p><s>删除线的字体</s></p><h1>H1字体-开发和时空房间</h1><h2>H2字体-哈哈哈哈</h2><ol><li>我是列表1</li><li>我是列表2</li><li>我是列表3</li><li>我是列表4</li></ol><ul><li>我前面是点1</li><li>我前面是点2</li><li>我前面是点3</li></ul><p>角标-CO<sub>2</sub></p><p>上标-9<sup>3</sup></p><p><span class=\"ql-size-large\">大号字体-尽快发货</span></p><p><span class=\"ql-size-small\">小号字体-活动哈哈</span></p><h2>二级标题-哈哈哈</h2><h4>四级标题-呼呼呼呼</h4><p><span style=\"color: rgb(230, 0, 0);\">字体加颜色-红色</span></p><p><span style=\"background-color: rgb(178, 178, 0);\">字体填充色-哈哈</span></p><p class=\"ql-align-center\">我是居中</p><p class=\"ql-align-right\">我说居右</p><p><img src=\"/tlmp-content/temp-imgs/portal/viewImg?imgContent=052598519bab46f4a244decc912e2f68.png\"></p><p><img src=\"/tlmp-content/temp-imgs/portal/viewImg?imgContent=914d7ab2c2834157b3d546bd7d2c557c.png\"></p>";
+        String html1 = "<p><strong>来来来我是加粗的字体</strong></p><p><em>斜体哈哈哈哈哈哈</em></p><p><u>下横线的字体哈哈哈</u></p><p><s>删除线的字体</s></p><h1>H1字体-开发和时空房间</h1><h2>H2字体-哈哈哈哈</h2><ol><li>我是列表1</li><li>我是列表2</li><li>我是列表3</li><li>我是列表4</li></ol><ul><li>我前面是点1</li><li>我前面是点2</li><li>我前面是点3</li></ul><p>角标-CO<sub>2</sub></p><p>上标-9<sup>3</sup></p><p><span class=\"ql-size-large\">大号字体-尽快发货</span></p><p><span class=\"ql-size-small\">小号字体-活动哈哈</span></p><h2>二级标题-哈哈哈</h2><h4>四级标题-呼呼呼呼</h4><p><span style=\"color: rgb(230, 0, 0);\">字体加颜色-红色</span></p><p><span style=\"background-color: rgb(178, 178, 0);\">字体填充色-哈哈</span></p><p class=\"ql-align-center\">我是居中</p><p class=\"ql-align-right\">我说居右</p><p><img src=\"</p>";
 
         updateContentImgToNas(html1);
 
