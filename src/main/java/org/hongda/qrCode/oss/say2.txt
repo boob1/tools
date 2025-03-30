@@ -36,20 +36,4 @@
 
 3.配置：
 # OSS配置
-oss:
-  endPoint: http://10.4.33.170:8088
-  backEndPoint: http://10.4.33.170:8088
-  userAccessKey: 7MWB4DMYRFV0EZCB0G8W
-  userScretKey: NlTUrRVOgCQJfSweP0Y99qvw45gkIXwz9KeHWd0P
-  bucketName: yxglpt-bucket
-  imgPath: expert/image/
-  videoPath: expert/video/
-  pdfPath: expert/pdf/
-  iconPath: expert/icon/
-  expireTime: 93600
-  joinEndPoint: 0
-  ffmpegDir: /app/app/ffmpeg
-  innerDomain: http://kfobjstor.tlb.com:8088
-  outerDomain: https://tlmecodev.zjtlcb.com:8102
-  h5Url: https://tlmecodev.zjtlcb.com:8102/
 
